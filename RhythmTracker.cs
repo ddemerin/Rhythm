@@ -116,7 +116,7 @@ namespace Rhythm
         }
         public void AddAlbum()
         {
-            ViewAllBands();
+            ViewAllBandsForAdd();
             Console.WriteLine("Band you'd like to add an album to? Pick ID #.");
             // pick the id of the band user would like to add album to
             var bandId = int.Parse(Console.ReadLine());
@@ -216,7 +216,7 @@ namespace Rhythm
         public void LetBandGo()
         {
             // set IsSigned to false
-            ViewAllBands();
+            ViewAllBandsForAdd();
             Console.WriteLine("What band would you like to let go? Please choose band ID #.");
             var letGo = int.Parse(Console.ReadLine());
             var unSign = db.Bands.FirstOrDefault(band => band.Id == letGo);
@@ -235,7 +235,7 @@ namespace Rhythm
         public void ResignBand()
         {
             // set IsSigned to true
-            ViewAllBands();
+            ViewAllBandsForAdd();
             Console.WriteLine("What band would you like to sign? Please choose band ID #.");
             var signUp = int.Parse(Console.ReadLine());
             var signed = db.Bands.FirstOrDefault(band => band.Id == signUp);
@@ -259,7 +259,7 @@ namespace Rhythm
             {
                 Console.WriteLine($"({signedBand.Id}): {signedBand.Name}");
             }
-            Console.WriteLine("Press Enter to return MAIN MENU.");
+            Console.WriteLine("Press any key.");
             Console.ReadKey();
         }
         public void ViewUnsignedBands()
@@ -270,10 +270,20 @@ namespace Rhythm
             {
                 Console.WriteLine($"({unsignedBand.Id}): {unsignedBand.Name}");
             }
-                Console.WriteLine("Press Enter to return MAIN MENU.");
+                Console.WriteLine("Press any key.");
                 Console.ReadKey();
         }
         public void ViewAllBands()
+        {
+            var allBands = db.Bands.OrderBy(band => band.Name);
+            foreach (var band in allBands)
+            {
+                Console.WriteLine($"({band.Id}): {band.Name}");
+            }
+            Console.WriteLine("Press any key.");
+            Console.ReadKey();
+        }
+         public void ViewAllBandsForAdd()
         {
             var allBands = db.Bands.OrderBy(band => band.Name);
             foreach (var band in allBands)
@@ -284,7 +294,7 @@ namespace Rhythm
          public void ViewBandAlbums()
         {
             // view all albums of all bands
-            ViewAllBands();
+            ViewAllBandsForAdd();
             Console.WriteLine("Choose band ID # to view all Albums.");
             var bandId = int.Parse(Console.ReadLine());
             var bandAlbums = db.Albums.Where(album => album.BandId == bandId);
@@ -292,7 +302,7 @@ namespace Rhythm
             {
                 Console.WriteLine($"({album.Id}): {album.Title}");
             }
-            Console.WriteLine("Press Enter to return MAIN MENU.");
+            Console.WriteLine("Press any key.");
             Console.ReadKey();
         }
           public void ViewAlbumReleaseDate()
@@ -303,7 +313,7 @@ namespace Rhythm
             {
                 Console.WriteLine($"({album.Id}): {album.Title}");
             }
-            Console.WriteLine("Press Enter to return MAIN MENU.");
+            Console.WriteLine("Press any key.");
             Console.ReadKey();
         }
         public void ViewAlbumSongs()
@@ -321,7 +331,7 @@ namespace Rhythm
             {
                 Console.WriteLine($"{songs.Title}");
             }
-            Console.WriteLine("Press Enter to return MAIN MENU.");
+            Console.WriteLine("Press any key.");
             Console.ReadKey();
         }
     }
