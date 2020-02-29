@@ -284,8 +284,22 @@ namespace Rhythm
          public void ViewBandAlbums()
         {
             // view all albums of all bands
+            ViewAllBands();
+            Console.WriteLine("Choose band ID # to view all Albums.");
+            var bandId = int.Parse(Console.ReadLine());
+            var bandAlbums = db.Albums.Where(album => album.BandId == bandId);
+            foreach (var album in bandAlbums)
+            {
+                Console.WriteLine($"{album.Title}");
+            }
+            Console.WriteLine("Press Enter to return MAIN MENU.");
+            Console.ReadKey();
         }
         public void ViewAllAlbums()
+        {
+            // order all albums by ReleaseDate
+        }
+          public void ViewAlbumReleaseDate()
         {
             // order all albums by ReleaseDate
         }
@@ -293,12 +307,5 @@ namespace Rhythm
         {
             // view the songs of a specific album of a specific band
         }
-        // public void ReturnAlbumID(string title)
-        // {
-            
-        //     var albumId = db.Albums.First(album => album.Title == title).Id;
-        //     return 
-
-        // }
     }
 }

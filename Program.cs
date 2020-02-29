@@ -48,11 +48,11 @@ namespace Rhythm
           else if (main == "V")
           {
             Console.Clear();
-            Console.WriteLine("(S)IGNED, (U)NSIGNED, (A)LL ALBUMS, (M)AIN, or (Q)UIT?");
+            Console.WriteLine("(S)IGNED, (U)NSIGNED, (A)LL ALBUMS, (B)ANDS ALBUMS, ALBUMS BY (R)ELEASE DATE, (M)AIN, or (Q)UIT?");
             var view = Console.ReadLine().ToUpper();
               while (view != "S" && view != "U" && view != "A" && view != "M" && view != "Q" && view == null)
               {
-                Console.WriteLine("(S)IGNED, (U)NSIGNED, (A)LL ALBUMS, (M)AIN, or (Q)UIT?");
+                Console.WriteLine("(S)IGNED, (U)NSIGNED, (A)LL ALBUMS, (B)ANDS ALBUMS, ALBUMS BY (R)ELEASE DATE, (M)AIN, or (Q)UIT?");
               }
               if (view == "S")
               {
@@ -65,6 +65,14 @@ namespace Rhythm
               else if (view == "A")
               {
                 tracker.ViewAllAlbums();
+              }
+              else if (view == "B")
+              {
+                tracker.ViewBandAlbums();
+              }
+              else if (view == "R")
+              {
+                tracker.ViewAlbumReleaseDate();
               }
               else if (view == "M")
               {
