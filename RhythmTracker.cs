@@ -290,22 +290,39 @@ namespace Rhythm
             var bandAlbums = db.Albums.Where(album => album.BandId == bandId);
             foreach (var album in bandAlbums)
             {
-                Console.WriteLine($"{album.Title}");
+                Console.WriteLine($"({album.Id}): {album.Title}");
             }
             Console.WriteLine("Press Enter to return MAIN MENU.");
             Console.ReadKey();
         }
-        public void ViewAllAlbums()
-        {
-            // order all albums by ReleaseDate
-        }
           public void ViewAlbumReleaseDate()
         {
             // order all albums by ReleaseDate
+            var viewRD = db.Albums.OrderBy(album => album.ReleaseDate);
+            foreach (var album in viewRD)
+            {
+                Console.WriteLine($"({album.Id}): {album.Title}");
+            }
+            Console.WriteLine("Press Enter to return MAIN MENU.");
+            Console.ReadKey();
         }
         public void ViewAlbumSongs()
         {
+            var albums = db.Albums.OrderBy(album => album.Title);
+            foreach (var album in albums)
+            {
+                Console.WriteLine($"({album.Id}): {album.Title}");
+            }
             // view the songs of a specific album of a specific band
+            Console.WriteLine("Choose an album by ID#.");
+            var pickAlbum = int.Parse(Console.ReadLine());
+            var allAlbums = db.Songs.Where(song => song.AlbumId == pickAlbum);
+            foreach (var songs in allAlbums)
+            {
+                Console.WriteLine($"{songs.Title}");
+            }
+            Console.WriteLine("Press Enter to return MAIN MENU.");
+            Console.ReadKey();
         }
     }
 }

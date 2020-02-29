@@ -48,31 +48,36 @@ namespace Rhythm
           else if (main == "V")
           {
             Console.Clear();
-            Console.WriteLine("(S)IGNED, (U)NSIGNED, (A)LL ALBUMS, (B)ANDS ALBUMS, ALBUMS BY (R)ELEASE DATE, (M)AIN, or (Q)UIT?");
+            Console.WriteLine("(S)IGNED, (U)NSIGNED, (B)ANDS ALBUMS, ALBUMS BY (R)ELEASE DATE, S(O)NGS IN AN ALBUM, (M)AIN, or (Q)UIT?");
             var view = Console.ReadLine().ToUpper();
-              while (view != "S" && view != "U" && view != "A" && view != "M" && view != "Q" && view == null)
+              while (view != "S" && view != "U"  && view != "B"  && view != "R"  && view != "O" && view != "M" && view != "Q" && view == null)
               {
-                Console.WriteLine("(S)IGNED, (U)NSIGNED, (A)LL ALBUMS, (B)ANDS ALBUMS, ALBUMS BY (R)ELEASE DATE, (M)AIN, or (Q)UIT?");
+                Console.WriteLine("(S)IGNED, (U)NSIGNED, (B)ANDS ALBUMS, ALBUMS BY (R)ELEASE DATE, S(O)NGS IN AN ALBUM, (M)AIN, or (Q)UIT?");
               }
               if (view == "S")
               {
+                Console.Clear();
                 tracker.ViewSignedBands();
               }
               else if (view == "U")
               {
+                Console.Clear();
                 tracker.ViewUnsignedBands();
-              }
-              else if (view == "A")
-              {
-                tracker.ViewAllAlbums();
               }
               else if (view == "B")
               {
+                Console.Clear();
                 tracker.ViewBandAlbums();
               }
               else if (view == "R")
               {
+                Console.Clear();
                 tracker.ViewAlbumReleaseDate();
+              }
+              else if (view == "O")
+              {
+                Console.Clear();
+                tracker.ViewAlbumSongs();
               }
               else if (view == "M")
               {
