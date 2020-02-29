@@ -88,10 +88,7 @@ namespace Rhythm.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("AlbumId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BandId")
+                    b.Property<int>("AlbumId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Genre")
@@ -110,8 +107,6 @@ namespace Rhythm.Migrations
 
                     b.HasIndex("AlbumId");
 
-                    b.HasIndex("BandId");
-
                     b.ToTable("Songs");
                 });
 
@@ -126,13 +121,9 @@ namespace Rhythm.Migrations
 
             modelBuilder.Entity("Rhythm.Models.Song", b =>
                 {
-                    b.HasOne("Rhythm.Models.Album", null)
+                    b.HasOne("Rhythm.Models.Album", "Album")
                         .WithMany("Songs")
-                        .HasForeignKey("AlbumId");
-
-                    b.HasOne("Rhythm.Models.Band", "Band")
-                        .WithMany()
-                        .HasForeignKey("BandId")
+                        .HasForeignKey("AlbumId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

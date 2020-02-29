@@ -22,9 +22,10 @@ namespace Rhythm
         public void BandValidation(string bandName)
         {
             var validation = db.Bands.Any(band => band.Name == bandName);
-            while (!validation)
+            while (validation)
             {
                 Console.WriteLine("That band doesn't exist. Please enter a signed band.");
+                bandName = Console.ReadLine();
             }
         }
         public void PopulateDbBand()
@@ -113,19 +114,7 @@ namespace Rhythm
             var contactPhoneNumber = Console.ReadLine();
             AddNewBandToDb(bandName, countryOfOrigin, numberOfMembers, website, style, personOfContact, contactPhoneNumber);
         }
-        public void AddAlbumToDB(int bandId, string title, bool parsedBool, DateTime parsedDate)
-        {
-            var newAlbum = new Album()
-            {
-            BandId = bandId,
-            Title = title,
-            IsExplicit = parsedBool,
-            ReleaseDate = parsedDate
-            };
-            db.Albums.Add(newAlbum);
-            db.SaveChanges();
-        }
-        public void AddAlbumUI()
+        public void AddAlbum()
         {
             ViewAllBands();
             Console.WriteLine("Band you'd like to add an album to? Pick ID #.");
@@ -138,32 +127,41 @@ namespace Rhythm
             var title = Console.ReadLine();
             Console.WriteLine("Explicit? (Y)ES or (N)O>");
             // choose whether the album has explicit lyrics or not
-            var isExplicit = Console.ReadLine().ToUpper();
-            bool parsedBool = bool.Parse(isExplicit);
-                if (isExplicit != "Y" && isExplicit != "N")
+            var isExplicit = false;
+            var explicitCheck = Console.ReadLine().ToUpper();
+                if (explicitCheck != "Y" && explicitCheck != "N")
                 {
                     Console.WriteLine("That's not a valid answer.\n\n (Y)ES or (N)O?");
                 }
-                if (isExplicit == "Y")
+                if (explicitCheck == "Y")
                 {
-                    parsedBool = true;
+                    isExplicit = true;
                 }
-                else if (isExplicit == "N")
+                else if (explicitCheck == "N")
                 {
-                    parsedBool = false;
+                    isExplicit = false;
                 }
             Console.WriteLine("Release Date? Enter in yyyy, mm, dd format.");
             // enter the release date of the album
             var releaseDate = Console.ReadLine();
-            DateTime parsedDate = DateTime.Parse(releaseDate);
+            var parsedDate = DateTime.Parse(releaseDate);
             // add the album to the database according to bandId
-            AddAlbumToDB(bandId, title, parsedBool, parsedDate);
-            Console.WriteLine("Please add a song to the album.");
-            // passes title of band picked to 
-            AddSongUI();
+            var newAlbum = new Album()
+                {
+                BandId = bandId,
+                Title = title,
+                IsExplicit = isExplicit,
+                ReleaseDate = parsedDate
+                };
+                db.Albums.Add(newAlbum);
+                db.SaveChanges();
+            // passes title of band picked to
+            var albumId = newAlbum.Id;
+            AddSongUI(albumId);
         }
-        public void AddSongUI()
+        public void AddSongUI(int albumId)
         {
+            Console.WriteLine("Please add a song to the album.");
             // add song
             Console.WriteLine("Song Title?");
             // type in title of song
@@ -178,27 +176,27 @@ namespace Rhythm
             // type in the genre of song
             var genre = Console.ReadLine();
             // method to return the album Id
-            ReturnAlbumID();
             AddSongToDb(albumId, songTitle, lyrics, length, genre);
             Console.WriteLine("Would you like to add another song?\n\n (Y)ES or (N)O?");
             var addAnother = Console.ReadLine().ToUpper();
-            if (addAnother != "Y" && addAnother != "N")
-            {
-                Console.WriteLine("Not a valid input. Please choose either (Y)ES or (N)O.");
-                addAnother = Console.ReadLine().ToUpper();
-            }
-            // while loop to keep adding songs
-            if (addAnother == "Y")
-            {
             var addSongs = true;
-                while (addSongs)
-                // add a song to album using AddSong()
-                {
-                    AddSongUI();
-                }
-            }
-            else if (addAnother == "N")
+            while (addSongs)
             {
+                if (addAnother != "Y" && addAnother != "N")
+                {
+                    Console.WriteLine("Not a valid input. Please choose either (Y)ES or (N)O.");
+                    addAnother = Console.ReadLine().ToUpper();
+                }
+                // while loop to keep adding songs
+                if (addAnother == "Y")
+                {
+                    // add a song to album using AddSong()
+                        AddSongUI(albumId);
+                }
+                else if (addAnother == "N")
+                {
+                    addSongs = false;
+                }
             }
         }
         public void AddSongToDb(int albumId, string songTitle, string lyrics, string length, string genre)
@@ -218,18 +216,62 @@ namespace Rhythm
         public void LetBandGo()
         {
             // set IsSigned to false
+            ViewAllBands();
+            Console.WriteLine("What band would you like to let go? Please choose band ID #.");
+            var letGo = int.Parse(Console.ReadLine());
+            var unSign = db.Bands.FirstOrDefault(band => band.Id == letGo);
+            if ( unSign == null)
+            {
+                Console.WriteLine("Not a valid option. Pick valid band ID #.");
+                letGo = int.Parse(Console.ReadLine());
+                unSign = db.Bands.FirstOrDefault(band => band.Id == letGo);
+            }
+            if (unSign != null)
+            {
+                unSign.IsSigned = false;
+                db.SaveChanges();
+            }
         }
         public void ResignBand()
         {
             // set IsSigned to true
+            ViewAllBands();
+            Console.WriteLine("What band would you like to sign? Please choose band ID #.");
+            var signUp = int.Parse(Console.ReadLine());
+            var signed = db.Bands.FirstOrDefault(band => band.Id == signUp);
+            if (signed == null)
+            {
+                Console.WriteLine("Not a valid option. Pick valid band ID #.");
+                signUp = int.Parse(Console.ReadLine());
+                signed = db.Bands.FirstOrDefault(band => band.Id == signUp);
+            }
+            if (signed != null)
+            {
+                signed.IsSigned = true;
+                db.SaveChanges();
+            }
         }
         public void ViewSignedBands()
         {
             // view all bands where IsSigned is true
+            var signedBands = db.Bands.Where(band => band.IsSigned == true);
+            foreach (var signedBand in signedBands)
+            {
+                Console.WriteLine($"({signedBand.Id}): {signedBand.Name}");
+            }
+            Console.WriteLine("Press Enter to return MAIN MENU.");
+            Console.ReadKey();
         }
         public void ViewUnsignedBands()
         {
-            // view all bands where IsSigned is false 
+            // view all bands where IsSigned is false
+            var unSignedBands = db.Bands.Where(band => band.IsSigned == false);
+            foreach (var unsignedBand in unSignedBands)
+            {
+                Console.WriteLine($"({unsignedBand.Id}): {unsignedBand.Name}");
+            }
+                Console.WriteLine("Press Enter to return MAIN MENU.");
+                Console.ReadKey();
         }
         public void ViewAllBands()
         {
@@ -251,12 +293,12 @@ namespace Rhythm
         {
             // view the songs of a specific album of a specific band
         }
-        public void ReturnAlbumID(string title)
-        {
+        // public void ReturnAlbumID(string title)
+        // {
             
-            var albumId = db.Albums.First(album => album.Title == title).Id;
-            return 
+        //     var albumId = db.Albums.First(album => album.Title == title).Id;
+        //     return 
 
-        }
+        // }
     }
 }

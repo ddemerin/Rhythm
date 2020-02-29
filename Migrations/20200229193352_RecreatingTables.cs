@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Rhythm.Migrations
 {
-    public partial class ReAddedTables : Migration
+    public partial class RecreatingTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,8 +60,7 @@ namespace Rhythm.Migrations
                     Lyrics = table.Column<string>(nullable: true),
                     Length = table.Column<string>(nullable: true),
                     Genre = table.Column<string>(nullable: true),
-                    BandId = table.Column<int>(nullable: false),
-                    AlbumId = table.Column<int>(nullable: true)
+                    AlbumId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,12 +69,6 @@ namespace Rhythm.Migrations
                         name: "FK_Songs_Albums_AlbumId",
                         column: x => x.AlbumId,
                         principalTable: "Albums",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Songs_Bands_BandId",
-                        column: x => x.BandId,
-                        principalTable: "Bands",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -89,11 +82,6 @@ namespace Rhythm.Migrations
                 name: "IX_Songs_AlbumId",
                 table: "Songs",
                 column: "AlbumId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Songs_BandId",
-                table: "Songs",
-                column: "BandId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

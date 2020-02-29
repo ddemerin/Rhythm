@@ -21,8 +21,9 @@ namespace Rhythm
         tracker.PopulateDbSong();
         Console.WriteLine("(A)DD BAND, (P)RODUCE ALBUM, (L)ET GO, (R)ESIGN, (V)IEW, or (Q)UIT?");
         var main = Console.ReadLine().ToUpper();
-          while (main != "A" && main != "P" && main != "L" && main != "R" && main != "V" && main != "Q")
+          while (main != "A" && main != "P" && main != "L" && main != "R" && main != "V" && main != "Q" && main == null)
               {
+                Console.WriteLine("(A)DD BAND, (P)RODUCE ALBUM, (L)ET GO, (R)ESIGN, (V)IEW, or (Q)UIT?");
               }
           if (main == "A")
           {
@@ -32,7 +33,7 @@ namespace Rhythm
           else if (main == "P")
           {
             Console.Clear();
-            tracker.AddAlbumUI(albumId);
+            tracker.AddAlbum();
           }
           else if (main == "L")
           {
@@ -47,10 +48,11 @@ namespace Rhythm
           else if (main == "V")
           {
             Console.Clear();
-            Console.WriteLine("(S)IGNED, (U)NSIGNED, (A)LL ALBUMS, (M)AIN, or (Q)?");
+            Console.WriteLine("(S)IGNED, (U)NSIGNED, (A)LL ALBUMS, (M)AIN, or (Q)UIT?");
             var view = Console.ReadLine().ToUpper();
-              while (view != "S" && view != "U" && view != "A" && view != "M" && view != "Q")
+              while (view != "S" && view != "U" && view != "A" && view != "M" && view != "Q" && view == null)
               {
+                Console.WriteLine("(S)IGNED, (U)NSIGNED, (A)LL ALBUMS, (M)AIN, or (Q)UIT?");
               }
               if (view == "S")
               {
