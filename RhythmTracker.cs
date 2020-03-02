@@ -7,7 +7,7 @@ namespace Rhythm
     public class RhythmTracker
     {
         public static DatabaseContext db { get; set; } = new DatabaseContext();
-        // public void IntValidation(string bandId)
+        // public void IntValidation()
         // {
         //     var bandId = Console.ReadLine().ToLower();
         //     var test = 0;
@@ -24,7 +24,7 @@ namespace Rhythm
             var validation = db.Bands.Any(band => band.Name == bandName);
             while (validation)
             {
-                Console.WriteLine("That band doesn't exist. Please enter a signed band.");
+                Console.WriteLine("That band already exists in the database. Please enter a new band.");
                 bandName = Console.ReadLine();
             }
         }
@@ -97,6 +97,7 @@ namespace Rhythm
         }
         public void AddNewBandUI()
         {
+            Console.Clear();
             Console.WriteLine("Name?");
             var bandName = Console.ReadLine();
             BandValidation(bandName);
@@ -122,6 +123,7 @@ namespace Rhythm
             var bandId = int.Parse(Console.ReadLine());
             // need validation for ints
             // add an album title
+            Console.Clear();
             Console.WriteLine("Album Title?");
             // enter the title of the album
             var title = Console.ReadLine();
@@ -161,9 +163,10 @@ namespace Rhythm
         }
         public void AddSongUI(int albumId)
         {
+            Console.Clear();
             Console.WriteLine("Please add a song to the album.");
             // add song
-            Console.WriteLine("Song Title?");
+            Console.WriteLine("\nSong Title?");
             // type in title of song
             var songTitle = Console.ReadLine();
             Console.WriteLine("Lyrics?");
@@ -297,6 +300,7 @@ namespace Rhythm
             ViewAllBandsForAdd();
             Console.WriteLine("Choose band ID # to view all Albums.");
             var bandId = int.Parse(Console.ReadLine());
+            Console.Clear();
             var bandAlbums = db.Albums.Where(album => album.BandId == bandId);
             foreach (var album in bandAlbums)
             {
@@ -308,16 +312,18 @@ namespace Rhythm
           public void ViewAlbumReleaseDate()
         {
             // order all albums by ReleaseDate
+            Console.Clear();
             var viewRD = db.Albums.OrderBy(album => album.ReleaseDate);
             foreach (var album in viewRD)
             {
-                Console.WriteLine($"({album.Id}): {album.Title}");
+                Console.WriteLine($"({album.Id}): {album.Title} was released on {album.ReleaseDate}.");
             }
             Console.WriteLine("Press any key.");
             Console.ReadKey();
         }
         public void ViewAlbumSongs()
         {
+            Console.Clear();
             var albums = db.Albums.OrderBy(album => album.Title);
             foreach (var album in albums)
             {
@@ -326,6 +332,7 @@ namespace Rhythm
             // view the songs of a specific album of a specific band
             Console.WriteLine("Choose an album by ID#.");
             var pickAlbum = int.Parse(Console.ReadLine());
+            Console.Clear();
             var allAlbums = db.Songs.Where(song => song.AlbumId == pickAlbum);
             foreach (var songs in allAlbums)
             {

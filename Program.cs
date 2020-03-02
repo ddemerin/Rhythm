@@ -131,10 +131,10 @@ namespace Rhythm
         
       var menu = new ConsoleMenu(args, level: 0)
         .Add("View", subMenu.Show)
-        .Add("Add", () => tracker.AddNewBandUI())
-        .Add("Produce", () => tracker.AddAlbum())
-        .Add("Let Go", () => tracker.LetBandGo())
-        .Add("Resign", () => tracker.ResignBand())
+        .Add("Sign a New Band", () => tracker.AddNewBandUI())
+        .Add("Produce a Album", () => tracker.AddAlbum())
+        .Add("Let Go of Signed Band", () => tracker.LetBandGo())
+        .Add("Resign a Band", () => tracker.ResignBand())
         .Add("Exit", () => Environment.Exit(0))
         .Configure(config =>
         {
